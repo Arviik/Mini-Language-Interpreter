@@ -88,8 +88,39 @@ def evalInst(t):
         evalInst(t[2])
     
 def evalExpr(t):
-    print('evalExpr', t)
-    return "TODO"
+    if isinstance(t, int):
+        return t  # Si t est déjà une valeur, je renvoie la valeur
+
+    if isinstance(t, tuple):
+        op = t[0]
+        left = evalExpr(t[1])
+        right = evalExpr(t[2])
+
+        if op == 'PLUS':
+            return left + right
+        elif op == 'MINUS':
+            return left - right
+        elif op == 'TIMES':
+            return left * right
+        elif op == 'DIVIDE':
+            if right != 0:
+                return left / right
+            else:
+                print("Error: Division by zero")
+        elif op == 'AND':
+            return left and right
+        elif op == 'OR':
+            return left or right
+        elif op == 'EQUALS':
+            return left == right
+        elif op == 'LOWER':
+            return left < right
+        elif op == 'HIGHER':
+            return left > right
+
+    # Si t n'est pas une valeur ni une opération, dans ce cas je renvoie une erreur.
+    print(f"Error: Unknown expression {t}")
+    return None
 
 def p_line(t):
     '''linst : linst inst 
