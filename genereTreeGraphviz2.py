@@ -1,32 +1,32 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 Author : Vincent Genin ESGI-3AL 2018
-'''
+"""
 
 import uuid
 import graphviz as gv
 
 
-def printTreeGraph(t):
+def print_tree_graph(t):
     graph = gv.Digraph(format='pdf')
     graph.attr('node', shape='circle')
-    addNode(graph, t)
+    add_node(graph, t)
     graph.render(filename='img/graph')  # Pour Sauvegarder
     graph.view()  # Pour afficher
 
 
-def addNode(graph, t):
-    myId = uuid.uuid4()
+def add_node(graph, t):
+    my_id = uuid.uuid4()
 
-    if type(t) != tuple:
-        graph.node(str(myId), label=str(t))
-        return myId
+    if type(t) is not tuple:
+        graph.node(str(my_id), label=str(t))
+        return my_id
 
-    graph.node(str(myId), label=str(t[0]))
+    graph.node(str(my_id), label=str(t[0]))
     for i in range(1, len(t)):
-        graph.edge(str(myId), str(addNode(graph, t[i])), arrowsize='0')
+        graph.edge(str(my_id), str(add_node(graph, t[i])), arrowsize='0')
 
-    return myId
+    return my_id
 
 
-printTreeGraph(('+', 1, 2))
+print_tree_graph(('+', 1, 2))
