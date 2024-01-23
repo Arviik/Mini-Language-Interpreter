@@ -10,7 +10,7 @@ reserved = {
 }
 
 tokens = [
-             'NAME', 'NUMBER',
+             'NAME', 'NUMBER', 'STRING',
              'PLUS', 'MINUS', 'TIMES', 'DIVIDE',
              'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'COLON', 'QUOTE',
              'AND', 'OR', 'EQUAL', 'EQUALS', 'LOWER', 'HIGHER'
@@ -40,6 +40,7 @@ t_OR = r'\|'
 t_EQUALS = r'=='
 t_LOWER = r'\<'
 t_HIGHER = r'\>'
+t_STRING = r'"[^"]+"'
 
 
 def t_NUMBER(t):
@@ -97,7 +98,7 @@ def eval_inst(t):
     if t[0] == 'print':
         print('CALC>', eval_expr(t[1]))
     if t[0] == 'print_string':
-        print('STRING>', t[1])
+        print('STRING>', t[1][1:-1])
     if t[0] == 'assign':
         names[t[1]] = eval_expr(t[2])
     if t[0] == 'short_assign':
@@ -195,8 +196,8 @@ def p_statement_print(t):
 
 
 def p_statement_print_string(t):
-    'inst : PRINTSTRING LPAREN QUOTE NAME QUOTE RPAREN COLON'
-    t[0] = ('print_string', t[4])
+    'inst : PRINTSTRING LPAREN STRING RPAREN COLON'
+    t[0] = ('print_string', t[3])
 
 
 def p_statement_if(t):
