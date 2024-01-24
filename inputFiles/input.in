@@ -1,0 +1,16 @@
+function carre() {
+    printString("Fonction Carre");
+    print(5*2);
+};
+
+for (x=0;x<3;x++;) {
+    carre();
+    print(x);
+};
+
+y = 6;
+while (y>0) {
+    printString("Valeur de y :");
+    print(y);
+    y-=2;
+};

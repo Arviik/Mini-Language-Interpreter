@@ -6,7 +6,8 @@ reserved = {
     'for': 'FOR',
     'then': 'THEN',
     'print': 'PRINT',
-    'printString': 'PRINTSTRING'
+    'printString': 'PRINTSTRING',
+    'function': 'FUNCTION'
 }
 
 tokens = [
@@ -86,6 +87,7 @@ def p_start(t):
 
 
 names = {}
+functions = {}
 
 
 def eval_inst(t):
@@ -127,6 +129,10 @@ def eval_inst(t):
                 break
             eval_inst(t[4])
             eval_inst(t[3])
+    if t[0] == 'define_function':
+        functions[t[1]] = t[2]
+    if t[0] == 'call_function':
+        eval_inst(functions[t[1]])
     if t[0] == 'bloc':
         eval_inst(t[1])
         eval_inst(t[2])
@@ -215,6 +221,16 @@ def p_statement_for(t):
     t[0] = ('for', t[3], t[4], t[6], t[9])
 
 
+def p_statement_define_function(t):
+    'inst : FUNCTION NAME LPAREN RPAREN LBRACKET linst RBRACKET COLON'
+    t[0] = ('define_function', t[2], t[6])
+
+
+def p_statement_call_function(t):
+    'inst : NAME LPAREN RPAREN COLON'
+    t[0] = ('call_function', t[1])
+
+
 def p_expression_binop(t):
     '''expression : expression PLUS expression
                   | expression MINUS expression
@@ -251,20 +267,7 @@ import ply.yacc as yacc
 
 parser = yacc.yacc()
 
-# s = '1+2;x=4 if ;x=x+1;'
-# s = 'print(1+2);x=4;x=x+1;'
-# s = 'x=2-3;print(x);if(x==3){print(x+4);x=0;};print(x+20);'
-# s = 'x=2;while(x<10){x=x+1;print(x);};'
-s = 'for(x=0;x<10;x++;){print(x);};'
-# s = 'x=5;x--;print(x);'
-# s = 'printString("Hello_World");x=13;x++;print(x);'
-
-# s = 'x=5;print(x);x/=2;print(x);'
-
-# s = input('calc > ')
-
-# with open("1.in") as file: # Use file to refer to the file object
-
-# s = file.read()
+with open("inputFiles/input.in") as file:  # Use file to refer to the file object
+    s = file.read()
 
 parser.parse(s)
