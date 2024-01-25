@@ -2,9 +2,10 @@ from genereTreeGraphviz2 import print_tree_graph
 
 reserved = {
     'if': 'IF',
+    'elif': 'ELIF',
+    'else': 'ELSE',
     'while': 'WHILE',
     'for': 'FOR',
-    'then': 'THEN',
     'print': 'PRINT',
     'printString': 'PRINTSTRING',
     'function': 'FUNCTION'
@@ -110,15 +111,20 @@ def eval_inst(t):
             names[t[1]] = names[t[1]] - 1
     if t[0] == 'op_assign':
         if t[2] == '+':
-            names[t[1]] = names[t[1]] + t[3]
+            names[t[1]] += t[3]
         if t[2] == '-':
-            names[t[1]] = names[t[1]] - t[3]
+            names[t[1]] -= t[3]
         if t[2] == '*':
-            names[t[1]] = names[t[1]] * t[3]
+            names[t[1]] *= t[3]
         if t[2] == '/':
-            names[t[1]] = names[t[1]] / t[3]
-    if t[0] == 'if' and eval_expr(t[1]):
-        eval_inst(t[2])
+            names[t[1]] /= t[3]
+    if t[0] == 'if' or t[0] == 'elif':
+        if eval_expr(t[1]):
+            eval_inst(t[2])
+        elif t[3] != ';':
+            eval_inst(t[3])
+    if t[0] == 'else':
+        eval_inst(t[1])
     if t[0] == 'while':
         while eval_expr(t[1]):
             eval_inst(t[2])
@@ -209,9 +215,20 @@ def p_statement_print_string(t):
     t[0] = ('print_string', t[3])
 
 
-def p_statement_if(t):
-    'inst : IF LPAREN expression RPAREN LBRACKET linst RBRACKET COLON'
-    t[0] = ('if', t[3], t[6])
+def p_statement_elif(t):
+    '''lif : ELIF LPAREN expression RPAREN LBRACKET linst RBRACKET lif
+            | ELIF LPAREN expression RPAREN LBRACKET linst RBRACKET COLON
+            | ELSE LBRACKET linst RBRACKET COLON'''
+    if t[1] == 'elif':
+        t[0] = ('elif', t[3], t[6], t[8])
+    else:
+        t[0] = ('else', t[3])
+
+
+def p_statement_lif(t):
+    '''inst : IF LPAREN expression RPAREN LBRACKET linst RBRACKET COLON
+            | IF LPAREN expression RPAREN LBRACKET linst RBRACKET lif'''
+    t[0] = ('if', t[3], t[6], t[8])
 
 
 def p_statement_while(t):

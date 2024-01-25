@@ -14,3 +14,13 @@ while (y>0) {
     print(y);
     y-=2;
 };
+
+z=12;
+
+if(z<10){
+    printString("if condition is true");
+    print(z);
+} else {
+    printString("if condition is false");
+    print(z + 100);
+};
