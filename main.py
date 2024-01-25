@@ -14,8 +14,8 @@ reserved = {
 tokens = [
              'NAME', 'NUMBER', 'STRING',
              'PLUS', 'MINUS', 'TIMES', 'DIVIDE',
-             'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'COLON', 'QUOTE',
-             'AND', 'OR', 'EQUAL', 'EQUALS', 'LOWER', 'HIGHER'
+             'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'COLON', 'COMMA', 'QUOTE',
+             'AND', 'OR', 'EQUAL', 'EQUALS', 'LOWER', 'HIGHER', 'COMMENT'
          ] + list(reserved.values())
 
 
@@ -36,6 +36,7 @@ t_RPAREN = r'\)'
 t_LBRACKET = r'\{'
 t_RBRACKET = r'\}'
 t_COLON = r';'
+t_COMMA = r','
 t_QUOTE = r'"'
 t_AND = r'\&'
 t_OR = r'\|'
@@ -43,6 +44,7 @@ t_EQUALS = r'=='
 t_LOWER = r'\<'
 t_HIGHER = r'\>'
 t_STRING = r'"[^"]+"'
+t_COMMENT = r'\/\*[^\*\/]*\*\/'
 
 
 def t_NUMBER(t):
@@ -249,6 +251,11 @@ def p_statement_define_function(t):
 def p_statement_call_function(t):
     'inst : NAME LPAREN RPAREN COLON'
     t[0] = ('call_function', t[1])
+
+
+def p_statement_comment(t):
+    'inst : COMMENT'
+    t[0] = ('comment', t[1])
 
 
 def p_expression_binop(t):
