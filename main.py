@@ -155,27 +155,24 @@ def eval_expr(t):
             return names[t]
         print("Unknown variable '%s'" % t)
     if type(t) is tuple:
-        op = t[0]
-        nbr1 = t[1]
-        nbr2 = t[2]
-        if op == '+':
-            return eval_expr(nbr1) + eval_expr(nbr2)
-        if op == '-':
-            return eval_expr(nbr1) - eval_expr(nbr2)
-        if op == '*':
-            return eval_expr(nbr1) * eval_expr(nbr2)
-        if op == '/':
-            return eval_expr(nbr1) // eval_expr(nbr2)
-        if op == '&':
-            return eval_expr(nbr1) and eval_expr(nbr2)
-        if op == '|':
-            return eval_expr(nbr1) or eval_expr(nbr2)
-        if op == '==':
-            return eval_expr(nbr1) == eval_expr(nbr2)
-        if op == '<':
-            return eval_expr(nbr1) < eval_expr(nbr2)
-        if op == '>':
-            return eval_expr(nbr1) > eval_expr(nbr2)
+        if t[0] == '+':
+            return eval_expr(t[1]) + eval_expr(t[2])
+        if t[0] == '-':
+            return eval_expr(t[1]) - eval_expr(t[2])
+        if t[0] == '*':
+            return eval_expr(t[1]) * eval_expr(t[2])
+        if t[0] == '/':
+            return eval_expr(t[1]) // eval_expr(t[2])
+        if t[0] == '&':
+            return eval_expr(t[1]) and eval_expr(t[2])
+        if t[0] == '|':
+            return eval_expr(t[1]) or eval_expr(t[2])
+        if t[0] == '==':
+            return eval_expr(t[1]) == eval_expr(t[2])
+        if t[0] == '<':
+            return eval_expr(t[1]) < eval_expr(t[2])
+        if t[0] == '>':
+            return eval_expr(t[1]) > eval_expr(t[2])
     print("Unknown expression '%s'" % t[0])
 
 
